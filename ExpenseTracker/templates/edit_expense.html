@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+
+<h1>Add New Record</h1>
+
+    <div class="container container3">
+        <h2 style="margin-bottom: 25px;">Edit Expense</h2>
+    <form class="addEarnForm" id='addIn' name="myForm" method="POST" action="">
+
+        {% csrf_token %}
+        <!-- <h5 style="text-decoration: underline; margin-bottom: 25px;">Today: {{date}}</h5> -->
+        
+        <!-- <input type="text" name="sstatus" class="sstatus" id="Sellstatus"> -->
+        <div class="form-group row">
+            <label for="expense" class="col-sm-2 col-form-label">Expense (in Rs)</label>
+            <div class="col-sm-10">
+              <input type="number" step="0.01" required name="expense" value="{{expense.expense}}" class="form-control numberIn" id="expense">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="description" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+              <input type="text" name="description" value="{{expense.description}}" class="form-control numberIn" required>
+            </div>
+          </div>
+
+          <!-- <div class="form-group row">
+            <label for="count" class="col-sm-2 col-form-label">No. of Shares</label>
+            <div class="col-sm-10">
+              <input type="number"  name="count" class="form-control numberIn" id="count">
+            </div>
+          </div> -->
+       
+          <!-- <div class="form-group row">
+            <label for="status" class="col-sm-2 col-form-label">Sold</label>
+            <div class="col-sm-10 s">
+              <input type="checkbox" id="status" name="status" value="Sold" class="form-control checkb" onclick="myFunction()">
+            </div>
+          </div> -->
+
+          <div class="sellData" id="Sblock">
+            <div class="form-group row">
+                <label for="date" class="col-sm-2 col-form-label">Date</label>
+                <div class="col-sm-10">
+                    <input type="date" name="date" value="{{expense.Date.year}}-{{day.month}}-{{day.day}}" />
+                </div>
+              </div>
+
+          </div>
+
+          
+       
+        <div class="form-group row">
+          <div class="col-sm-10">
+            <button type="submit" class="btn btn-success">Edit</button>
+            <a href="{% url 'deleteExp' pk=expense.pk %}"  class="btn btn-danger">Delete</a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <style>
+    input
+{
+   max-width: 350px;
+}
+    </style>
+
+   
+
+{% endblock %}

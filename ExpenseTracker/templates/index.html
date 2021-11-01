@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+<div class="wrapper">
+    <div class="container4">
+    <!-- <h1>Expense Tracker</h1> -->
+   
+    <!-- <input type="date" id="myDate" />
+    <a href="/?month=aggregate">Aggregate</a>
+    <br>
+    <form action="" method="get">
+        <input type="month" value="{{year}}-{{month}}" name="month">
+        <br>
+        <input type="submit" class="btn btn-primary" name="" id="">
+    </form> -->
+    <div class="wrap2">
+        <div class="filter-month">
+            <form action="" method="get">
+            
+            <input type="month" value="{{year}}-{{month}}" name="month">
+       
+            <input type="submit" value="Filter" class="btn btn-primary" name="" id="">
+        </form>
+        </div>
+      
+    </div>
+    <div class="filter-month" style="margin-bottom: 20px;">
+    <a href="/?month=aggregate" >Get Complete Expenses  </a>
+    <a href="{% url 'addexpense' %}" style="margin-left: auto;" class="btn btn-success custombtn">
+        <i class="fas fa-plus-circle"></i> Add Expense
+       </a>
+    </div>
+    <div style="margin-top: 50px;">
+    {% if expenses %}
+
+    {% if month %} 
+    <h2>Expenses in the month <span id="month">{{month}}</span>/<span id="year">{{year}}</span></h2>
+    {% else %} 
+    <h2><span id="month"></span>Complete Expenses </h2>
+    {% endif %}
+    <a id="link" style="display: none;" href="static/excel/Expenses_{{user.username}}.xls"> Download </a> 
+
+    <button id="csvLink" class="btn btn-default download"> <i class="fas fa-download"></i>  Download to Excel </button>
+    <div class="table-wrapper">
+        <table>
+            <tr>
+                <th>SI No.</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Expense (in Rs)</th>
+                <th></th>
+            </tr>
+   
+    {% for item in expenses %}
+    <tr class="entries" >
+        <td class="si_no" ></td>
+        <td>{{item.Date}}</td>
+        <td class="cout" >{{item.description}}</td>
+        <td class="total">{{item.expense}}</td>
+        <td> <a title="Edit record" href="{% url 'editExp' pk=item.pk %}" class="edit" >Edit <i class="fas fa-edit"></i>  </a> </td>
+    </tr>
+    {% endfor %}
+    </table>
+    <h5 style="margin-top: 15px;">Total Expense (in Rs): <span id="total"></span> </h5>
+</div>
+
+    {% else %}
+    <h2>You have no expenses </h2>
+    {% endif %}
+</div>
+
+    <script>
+        // document.getElementById("myDate").valueAsDate = new Date();
+
+
+        var entries = document.getElementsByClassName('entries');
+    var i = 1;
+    var total = 0;
+    var cashOut = 0;
+    var cashIn = 0;
+    for(item of entries)
+    {
+        item.getElementsByClassName('si_no')[0].innerHTML = i;
+        var etotal = parseFloat(item.getElementsByClassName('total')[0].innerHTML);
+        // console.log(etotal)
+        total+= etotal
+        // if(etotal<0)
+        // {
+        //     item.getElementsByClassName('total')[0].style.color = 'red';
+        // }
+        // else
+        // {
+        //     item.getElementsByClassName('total')[0].style.color = 'green';
+        // }
+        // console.log(i);
+        i++;
+        document.getElementById('total').innerHTML = total;
+    } 
+    </script>
+    </div>
+</div>
+
+<script>
+    
+    var link = document.getElementById('csvLink');
+    link.addEventListener('click', function(e)
+    {
+        e.preventDefault();
+        var month = document.getElementById('month').innerHTML;
+        if(month=="")
+        {
+            month="aggregate";
+            var year = ""
+        }
+        else
+        {
+            var year = document.getElementById('year').innerHTML;
+        }
+        var user = document.getElementById('username').innerHTML;
+        var url = `writeexcel/?month=${month}&year=${year}&user=${user}`;
+        
+        fetch(url).then((resp) => resp.json()
+        ).then((data) => 
+        {
+            if(data['message']=="success")
+            {
+                console.log(data['message'])
+                document.getElementById('link').click();
+            }
+        })
+        
+        
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+<style>
+    body
+    {
+        background: #151515;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  
+<div class="loginwrapper">
+<div class="login-form">
+    <ul class="messages">
+        {% for msg in messages %}
+            <li>
+                <div class="alert alert-{{msg.level_tag}}" role="alert">
+                    {{ msg.message }}
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+    <div class="text">
+       Expense Tracker Login
+    </div>
+    <form action="" method="post">
+        {% csrf_token %}
+       <div class="field">
+          <div class="fas fa-envelope"></div>
+          <input type="text" required name="username" placeholder="Username">
+       </div>
+       <div class="field">
+          <div class="fas fa-lock"></div>
+          <input type="password" name="password" required placeholder="Password">
+       </div>
+       <button type="submit">LOGIN</button>
+       <div class="link">
+          Not a member?
+          <a href="{% url 'signup' %}">Signup now</a>
+       </div>
+    </form>
+</div>
+ </div>
+{% endblock %}
